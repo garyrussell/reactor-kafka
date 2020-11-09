@@ -122,6 +122,7 @@ class ConsumerEventLoop<K, V> implements Sinks.EmitFailureHandler {
             log.debug("onRequest.toAdd: " + toAdd);
         }
         Operators.addCap(REQUESTED, this, toAdd);
+        log.debug("Scheduling next batch");
         pollEvent.schedule();
     }
 
