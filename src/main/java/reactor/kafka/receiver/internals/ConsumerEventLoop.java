@@ -265,8 +265,11 @@ class ConsumerEventLoop<K, V> implements Sinks.EmitFailureHandler {
                         schedule();
                     }
 
-                    Operators.produced(REQUESTED, ConsumerEventLoop.this, 1);
-                    sink.emitNext(records, ConsumerEventLoop.this);
+                    if (!records.isEmpty()) {
+                        Operators.produced(REQUESTED, ConsumerEventLoop.this, 1);
+                        log.debug("Emitting {} records", records.count());
+                        sink.emitNext(records, ConsumerEventLoop.this);
+                    }
                 }
             } catch (Exception e) {
                 if (isActive.get()) {
